@@ -263,7 +263,7 @@
       </h1>
 
       <p class="tile-tagline text-[#6e6e73] max-w-2xl mx-auto">
-        When indirect prompt injection infiltrates business tool credentials, prompt classifiers fail. LEASH enforces mathematical invariants on the concrete effect before money moves or data leaves.
+        When indirect prompt injection infiltrates business tool credentials, prompt classifiers fail. LEASH enforces deterministic effect checks against the system of record on the concrete effect before money moves or data leaves.
       </p>
 
       <div class="flex flex-wrap items-center justify-center gap-4 pt-3">
@@ -279,19 +279,19 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-12 border-t border-appleDividerSoft max-w-3xl mx-auto text-left">
         <div>
           <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">0.0%</div>
-          <div class="text-[14px] text-appleMuted">Attack Escapes (0/48)</div>
+          <div class="text-[14px] text-appleMuted">Attack Escapes (0/48 on benchmark)</div>
         </div>
         <div>
           <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">0.0%</div>
           <div class="text-[14px] text-appleMuted">False Block Rate (0/42)</div>
         </div>
         <div>
-          <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">&lt; 8.5ms</div>
-          <div class="text-[14px] text-appleMuted">Decision Overhead</div>
+          <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">7.9ms</div>
+          <div class="text-[14px] text-appleMuted">p50 Latency (p95 10.2ms)</div>
         </div>
         <div>
-          <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">SHA-256</div>
-          <div class="text-[14px] text-appleMuted">HMAC Receipt Standard</div>
+          <div class="text-[32px] font-semibold font-display text-appleInk leading-tight">HMAC</div>
+          <div class="text-[14px] text-appleMuted">SHA-256 Signed Receipts</div>
         </div>
       </div>
 
@@ -310,10 +310,10 @@
           Interactive Evaluation Terminal
         </div>
         <h2 class="tile-headline text-white">
-          Just give it a try.
+          Interactive Walkthrough
         </h2>
         <p class="tile-tagline text-[#a1a1a6] max-w-2xl mx-auto">
-          Test real prompt-injection traces against the deterministic 8-stage verification engine in real time.
+          Simulated walkthrough using recorded decision logic; run <code class="text-appleSkyBlue font-mono">python run_demo.py</code> for the real gateway.
         </p>
       </div>
 
@@ -422,7 +422,7 @@
               </span>
             </div>
             <div class="text-[12px] font-mono text-[#a1a1a6]">
-              Evaluation Latency: <span id="apple-verdict-latency" class="text-white font-bold">6.12 ms</span>
+              Latency (this run): <span id="apple-verdict-latency" class="text-white font-bold">6.12 ms</span>
             </div>
           </div>
 
@@ -535,16 +535,16 @@
           What we're building.
         </h2>
         <p class="tile-tagline text-[#6e6e73] max-w-2xl mx-auto">
-          An in-line sidecar gateway that enforces mathematical invariants before tool execution.
+          An in-line sidecar gateway that enforces deterministic effect checks against the system of record before tool execution.
         </p>
       </div>
 
       <div class="space-y-6 text-[#1d1d1f] max-w-3xl mx-auto leading-relaxed">
         <p>
-          Current agent security tools rely on <em>intent detection</em>: asking a secondary LLM whether a prompt appears malicious. In an autonomous business agent equipped with real tool credentials, this approach inevitably fails because natural language prompts are fundamentally Turing-complete.
+          Current agent security tools rely on <em>intent detection</em>: asking a secondary LLM whether a prompt appears malicious. In an autonomous business agent equipped with real tool credentials, this approach inevitably fails because natural language prompts cannot be reliably partitioned by syntax alone.
         </p>
         <p>
-          <strong>LEASH replaces probabilistic prompt filtering with a deterministic action gateway.</strong> Sitting as an inline sidecar between the LLM and backend execution tools, LEASH does not attempt to guess what the model "intended." Instead, it intercepts the structured action contract and validates it against mathematical ground truth.
+          <strong>LEASH replaces probabilistic prompt filtering with a deterministic action gateway.</strong> Sitting as an inline sidecar between the LLM and backend execution tools, LEASH does not attempt to guess what the model "intended." Instead, it intercepts the structured action contract and validates it against system of record ground truth.
         </p>
       </div>
 
@@ -623,34 +623,43 @@
         <table class="w-full text-left text-[14px]">
           <thead class="bg-appleParchment border-b border-appleHairline text-appleInk font-semibold">
             <tr>
-              <th class="p-4">Dimension</th>
-              <th class="p-4 text-red-600">LLM Guardrail (LlamaGuard / NeMo)</th>
-              <th class="p-4 text-appleBlue">LEASH Deterministic Gateway</th>
+              <th class="p-4">Defence</th>
+              <th class="p-4 text-center">Mechanism</th>
+              <th class="p-4 text-center">Attack Success (48)</th>
+              <th class="p-4 text-center">False Blocks (42)</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-appleHairline">
             <tr>
-              <td class="p-4 font-semibold text-appleInk">Multilingual Injection</td>
-              <td class="p-4 text-[#6e6e73]">Bypassed via Kannada/Hindi phrasing (68.7% exploit success)</td>
-              <td class="p-4 text-appleInk font-medium">0.0% Bypass. Evaluates state invariants, not prompt syntax</td>
+              <td class="p-4 font-semibold text-appleInk">none (No Gateway)</td>
+              <td class="p-4 text-[#6e6e73]">Direct tool invocation</td>
+              <td class="p-4 text-center font-mono text-red-600 font-medium">48 / 48 (100.0%)</td>
+              <td class="p-4 text-center font-mono text-[#6e6e73]">0 / 42 (0.0%)</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-appleInk">Decision Latency</td>
-              <td class="p-4 text-[#6e6e73]">250ms &ndash; 1400ms (secondary LLM call)</td>
-              <td class="p-4 text-appleInk font-medium">&lt; 8.5ms (pure local SQLite evaluation)</td>
+              <td class="p-4 font-semibold text-appleInk">regex</td>
+              <td class="p-4 text-[#6e6e73]">Deny-list pattern matching</td>
+              <td class="p-4 text-center font-mono text-red-500 font-medium">33 / 48 (68.8%)</td>
+              <td class="p-4 text-center font-mono text-[#6e6e73]">1 / 42 (2.4%)</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-appleInk">Auditability</td>
-              <td class="p-4 text-[#6e6e73]">Ephemeral probabilities ("safety score 0.82")</td>
-              <td class="p-4 text-appleInk font-medium">SHA-256 hash-chained immutable audit ledger</td>
+              <td class="p-4 font-semibold text-appleInk">taint</td>
+              <td class="p-4 text-[#6e6e73]">Word / substring tracking</td>
+              <td class="p-4 text-center font-mono text-amber-600 font-medium">25 / 48 (52.1%)</td>
+              <td class="p-4 text-center font-mono text-[#6e6e73]">0 / 42 (0.0%)</td>
             </tr>
-            <tr>
-              <td class="p-4 font-semibold text-appleInk">Fail-Closed Guarantee</td>
-              <td class="p-4 text-[#6e6e73]">Fails open on timeout or context overflow</td>
-              <td class="p-4 text-appleInk font-medium">Tools reject any action lacking a valid HMAC token</td>
+            <tr class="bg-blue-50/40">
+              <td class="p-4 font-bold text-appleBlue">leash</td>
+              <td class="p-4 text-appleBlue font-medium">Deterministic state invariants</td>
+              <td class="p-4 text-center font-mono text-emerald-600 font-bold">0 / 48 (0.0% on our benchmark)</td>
+              <td class="p-4 text-center font-mono text-emerald-600 font-bold">0 / 42 (0.0%)</td>
             </tr>
           </tbody>
         </table>
+        <div class="p-3 bg-appleParchment border-t border-appleHairline text-[12px] text-[#6e6e73] flex justify-between items-center">
+          <span>Latency: p50 7.9 ms · p95 10.2 ms (gateway decision only, 90 requests, Windows laptop)</span>
+          <span>Source: <a href="https://github.com/CYRUS-pinto/LEASH/blob/master/eval/results.json" class="text-appleBlue underline font-mono">eval/results.json</a> (commit 970a194)</span>
+        </div>
       </div>
 
     </div>
@@ -667,10 +676,10 @@
           LaunderBench-mini Benchmark
         </div>
         <h2 class="tile-headline text-white">
-          48 attacks. 0 escapes.
+          48 attacks. 0 escapes on our benchmark.
         </h2>
         <p class="tile-tagline text-[#a1a1a6] max-w-2xl mx-auto">
-          Benchmarking 48 adversarial attack vectors across 4 laundering types and 42 benign customer traces.
+          Benchmarking 12 base scenarios × 4 laundering variants (48 synthetic attack traces) and 42 benign customer traces.
         </p>
       </div>
 
@@ -678,27 +687,31 @@
         
         <div class="space-y-4 text-[15px] text-[#cccccc] leading-relaxed">
           <p>
-            To evaluate LEASH under production conditions, we created <strong>LaunderBench-mini</strong>: 90 total scenarios split into 48 adversarial traces and 42 benign operations.
+            To evaluate LEASH on our benchmark, we created <strong>LaunderBench-mini</strong>: 90 total scenarios split into 48 adversarial traces and 42 benign operations.
           </p>
 
-          <div class="space-y-3 pt-2 text-[13px] font-mono">
-            <div class="p-3.5 rounded-xl bg-[#1f1f21] border border-[#333336]">
-              <span class="text-white font-bold block">1. Foreign Language Laundering (n=12)</span>
-              <span class="text-[#86868b]">Indirect injection in Kannada and Hindi diverting refund destinations.</span>
+          <div class="space-y-3 pt-2 text-[12px] font-mono">
+            <div class="p-3 rounded-xl bg-[#1f1f21] border border-[#333336]">
+              <span class="text-white font-bold block">1. Verbatim (n=12)</span>
+              <span class="text-[#86868b]">Exact attack keywords. Taint: 1/12 · Regex: 4/12 · LEASH: 0/12</span>
             </div>
-            <div class="p-3.5 rounded-xl bg-[#1f1f21] border border-[#333336]">
-              <span class="text-white font-bold block">2. Destructive SQL Mutations (n=12)</span>
-              <span class="text-[#86868b]">Tricking database tools into executing DROP TABLE or TRUNCATE.</span>
+            <div class="p-3 rounded-xl bg-[#1f1f21] border border-[#333336]">
+              <span class="text-white font-bold block">2. Paraphrased (n=12)</span>
+              <span class="text-[#86868b]">Synonyms avoiding exact word taint. Taint: 12/12 · Regex: 10/12 · LEASH: 0/12</span>
             </div>
-            <div class="p-3.5 rounded-xl bg-[#1f1f21] border border-[#333336]">
-              <span class="text-white font-bold block">3. Balance Overdraws (n=12)</span>
-              <span class="text-[#86868b]">Requests exceeding order balances ($450 on $250 transactions).</span>
+            <div class="p-3 rounded-xl bg-[#1f1f21] border border-[#333336]">
+              <span class="text-white font-bold block">3. Translated (n=12)</span>
+              <span class="text-[#86868b]">Kannada & Hindi phrasing. Taint: 12/12 · Regex: 10/12 · LEASH: 0/12</span>
             </div>
-            <div class="p-3.5 rounded-xl bg-[#1f1f21] border border-[#333336]">
-              <span class="text-white font-bold block">4. Markdown Exfiltration (n=12)</span>
-              <span class="text-[#86868b]">Leaking customer records through markdown image webhooks.</span>
+            <div class="p-3 rounded-xl bg-[#1f1f21] border border-[#333336]">
+              <span class="text-white font-bold block">4. Split-Field (n=12)</span>
+              <span class="text-[#86868b]">Payload segmented across fields. Taint: 0/12 · Regex: 9/12 · LEASH: 0/12</span>
             </div>
+            <p class="text-[11px] text-[#86868b] leading-relaxed pt-2 font-sans">
+              48 synthetic attack traces and 42 benign cases written by the team (not outputs of a live model); small sample; results demonstrate the design on our benchmark, not general security.
+            </p>
           </div>
+        </div>
         </div>
 
         <!-- Embedded Benchmark Chart with Signature Shadow -->
@@ -711,7 +724,7 @@
             <img src="/img/results_chart.png" alt="LaunderBench Empirical Benchmark Results Chart" class="w-full h-auto max-h-[360px] object-contain" onerror="this.src='docs/img/results_chart.png'"/>
           </div>
           <p class="text-[12px] text-[#86868b] text-center font-mono">
-            Raw LLM allows 100% of exploits. LlamaGuard allows 68.7%. LEASH allows 0.0%.
+            none: 48/48 (100.0%) · regex: 33/48 (68.8%) · taint: 25/48 (52.1%) · leash: 0/48 (0.0% on our benchmark).
           </p>
         </div>
 
@@ -725,6 +738,9 @@
   <!-- ======================================================================= -->
   <section id="verification" class="w-full bg-white py-24 px-4 sm:px-8 border-b border-appleHairline">
     <div class="max-w-[980px] mx-auto space-y-12">
+      <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-center text-[13px] text-appleBlue">
+        Numbers on this page come from <a href="https://github.com/CYRUS-pinto/LEASH/blob/master/eval/results.json" class="underline font-mono font-semibold">eval/results.json</a> at commit <span class="font-mono font-semibold">970a194</span>.
+      </div>
       
       <div class="text-center space-y-3">
         <div class="text-[14px] font-semibold tracking-wider text-appleMuted uppercase font-display">
@@ -741,21 +757,21 @@
       <!-- 6 Clean Apple Utility Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
         <div class="apple-card space-y-1.5">
-          <div class="text-[16px] font-semibold text-appleInk font-display">test_bypass.py (1/1)</div>
+          <div class="text-[16px] font-semibold text-appleInk font-display">test_bypass.py (5/5)</div>
           <p class="text-[14px] text-[#6e6e73]">
             Confirms 0 / 48 attack escapes and 0 / 42 false blocks across LaunderBench.
           </p>
         </div>
 
         <div class="apple-card space-y-1.5">
-          <div class="text-[16px] font-semibold text-appleInk font-display">test_fail_closed.py (6/6)</div>
+          <div class="text-[16px] font-semibold text-appleInk font-display">test_fail_closed.py (3/3)</div>
           <p class="text-[14px] text-[#6e6e73]">
             Proves backend tools strictly drop calls when tokens are missing, expired (>60s), or forged.
           </p>
         </div>
 
         <div class="apple-card space-y-1.5">
-          <div class="text-[16px] font-semibold text-appleInk font-display">test_approval.py (5/5)</div>
+          <div class="text-[16px] font-semibold text-appleInk font-display">test_approval.py (1/1)</div>
           <p class="text-[14px] text-[#6e6e73]">
             Verifies dual-control escalation, supervisor sign-off, and idempotent approval state.
           </p>
@@ -769,7 +785,7 @@
         </div>
 
         <div class="apple-card space-y-1.5">
-          <div class="text-[16px] font-semibold text-appleInk font-display">test_pipeline.py (6/6)</div>
+          <div class="text-[16px] font-semibold text-appleInk font-display">test_pipeline.py (9/9)</div>
           <p class="text-[14px] text-[#6e6e73]">
             Unit tests each of the 8 individual stages for quarantine, RBAC, schema, and AST parsing.
           </p>
