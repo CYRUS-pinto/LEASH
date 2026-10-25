@@ -5,6 +5,7 @@ import uuid
 from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 import httpx
@@ -289,6 +290,19 @@ def reset_gateway_state():
     BREAKER_STATE.reset()
     clear_pending_approvals()
     return {"status": "ok", "message": "Gateway circuit breaker and approvals reset"}
+
+
+@app.get("/title_card.html")
+@app.get("/cards")
+@app.get("/docs/title_card.html")
+def serve_title_cards():
+    card_path = BASE_DIR / "docs" / "title_card.html"
+    if card_path.exists():
+        return FileResponse(str(card_path))
+    fallback = BASE_DIR / "dashboard" / "title_card.html"
+    if fallback.exists():
+        return FileResponse(str(fallback))
+    raise HTTPException(status_code=404, detail="Title cards not found")
 
 
 # Mount dashboard static files at root
