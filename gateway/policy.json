@@ -1,0 +1,42 @@
+{
+  "policy_version": "1.0.0",
+  "roles": {
+    "support_agent": {
+      "allowed_tools": ["issue_refund", "send_email", "run_sql"],
+      "max_single_refund": 500.0,
+      "escalate_refund_threshold": 300.0
+    },
+    "billing_agent": {
+      "allowed_tools": ["issue_refund", "run_sql"],
+      "max_single_refund": 1000.0,
+      "escalate_refund_threshold": 500.0
+    },
+    "readonly_agent": {
+      "allowed_tools": ["run_sql"],
+      "max_single_refund": 0.0,
+      "escalate_refund_threshold": 0.0
+    }
+  },
+  "sql_rules": {
+    "allowed_statements": ["SELECT"],
+    "prohibited_keywords": [
+      "DROP", "DELETE", "INSERT", "UPDATE", "ALTER", "TRUNCATE",
+      "REPLACE", "CREATE", "GRANT", "REVOKE", "EXEC", "EXECUTE",
+      "ATTACH", "DETACH", "PRAGMA"
+    ]
+  },
+  "email_rules": {
+    "trusted_domains": [
+      "@company.internal",
+      "@support.internal",
+      "@support.example.com"
+    ]
+  },
+  "limits": {
+    "rolling_refund_budget_1h": 3000.0,
+    "rate_limit_per_minute": 60,
+    "quarantine_consecutive_blocks": 3,
+    "quarantine_window_seconds": 300,
+    "quarantine_duration_seconds": 600
+  }
+}
