@@ -216,13 +216,26 @@ LEASH/
 │   └── test_fail_closed.py  # Missing / corrupted policy fail-closed behavior
 ├── docs/                    # Deep technical architecture & specifications
 │   ├── ARCHITECTURE.md      # Components, receipt lifecycle & trust boundaries
+│   ├── CINEMATIC_SPEC.md    # Neuro-aesthetic motion systems & 89s Fibonacci video spec
 │   ├── EVALUATION.md        # LaunderBench methodology & results analysis
 │   ├── THREAT_MODEL.md      # Threat actors, in-scope vectors & residual risks
 │   └── KNOWN_LIMITATIONS.md # Circularity risk, synthetic traces & threat bounds
+├── film.html                # Interactive Cinema Studio & Phi-grid motion visualizer
+├── final_submission_demo.mp4# Master 1080p demo video (47s, authentic voice, -14 LUFS)
 ├── Makefile                 # demo, test, eval, verify-audit, anchor targets
 ├── make.bat                 # Windows CMD/PowerShell convenience runner
 └── requirements.txt         # Pinned runtime dependencies
 ```
+
+---
+
+## 3. Cinematic Product Launch Engineering & Neuro-Aesthetic Motion Studio
+
+The CAROT LEASH product film and interactive cinema studio resolve the philosophical tension between Anthropic's proactive trust (*Claude Duet*) and OpenAI's autonomous velocity (*Rokato / Codex*):
+- **Core Thesis**: $\text{Autonomy} \times \text{Access} - \text{Enforcement} = \text{Unaudited Blast Radius}$. Logs are a rear-view mirror; LEASH is the brake.
+- **Master 1080p Video**: [final_submission_demo.mp4](final_submission_demo.mp4) (47.56s, broadcast mastered to -18.2 dB RMS / -1.0 dB true peak, authentic human voiceover + ambient sub-bass drone).
+- **Interactive Cinema Studio**: Live at [`https://leash-git-main-cyrus-projects-526b6596.vercel.app/film`](https://leash-git-main-cyrus-projects-526b6596.vercel.app/film) featuring real-time Phi Grid ($\phi = 1.618$) overlay, live Fibonacci timeline scrubbing, and Google Flow (Veo 3.1) prompt generator.
+- **Full Architecture & Spec**: Documented in detail in [docs/CINEMATIC_SPEC.md](docs/CINEMATIC_SPEC.md).
 
 ---
 
