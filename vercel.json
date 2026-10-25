@@ -1,5 +1,11 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/film", "destination": "/film.html" },
+    { "source": "/film.html", "destination": "/film.html" },
+    { "source": "/cinema", "destination": "/film.html" },
+    { "source": "/title_card", "destination": "/title_card.html" }
+  ]
 }
