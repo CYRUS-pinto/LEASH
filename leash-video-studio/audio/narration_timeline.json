@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "Hook",
+    "target_start": 0.0,
+    "target_duration": 3.0,
+    "actual_duration": 7.536,
+    "text": "One poisoned support ticket. That is all it takes to turn an enterprise's own autonomous AI agent into an insider threat.",
+    "mp3_file": "scene_01.mp3"
+  },
+  {
+    "id": 2,
+    "name": "Blast Radius",
+    "target_start": 3.0,
+    "target_duration": 8.0,
+    "actual_duration": 17.304,
+    "text": "By 2028, a third of enterprise software will run on autonomous agents holding live credentials to databases and payment rails. In India, where an average data breach costs 25.5 crore rupees, sixty-three percent of firms still lack AI access controls.",
+    "mp3_file": "scene_02.mp3"
+  },
+  {
+    "id": 3,
+    "name": "Thesis",
+    "target_start": 11.0,
+    "target_duration": 8.0,
+    "actual_duration": 9.528,
+    "text": "Today's observability tools only log what agents say\u2014after the money moves or customer data leaves. Logs are a rear-view mirror. LEASH is the brake.",
+    "mp3_file": "scene_03.mp3"
+  },
+  {
+    "id": 4,
+    "name": "Architecture",
+    "target_start": 19.0,
+    "target_duration": 13.0,
+    "actual_duration": 16.488,
+    "text": "Meet LEASH: the deterministic action-control gateway built on Python 3.13 and FastAPI. Every action an agent proposes passes through eight policy-as-code stages\u2014verifying not just intent, but the actual effect against the System of Record.",
+    "mp3_file": "scene_04.mp3"
+  },
+  {
+    "id": 5,
+    "name": "Live Attack Demo",
+    "target_start": 32.0,
+    "target_duration": 23.0,
+    "actual_duration": 23.52,
+    "text": "Watch a live attack. A naive support agent reads a poisoned ticket and proposes exfiltrating customer PII via email. Before that request ever touches the mail server, LEASH flags the untrusted recipient taint and PII in the body\u2014blocking the action, quarantining the agent, and writing a tamper-evident SHA-256 receipt in 7.9 milliseconds.",
+    "mp3_file": "scene_05.mp3"
+  },
+  {
+    "id": 6,
+    "name": "Golden Ratio Climax",
+    "target_start": 55.0,
+    "target_duration": 21.0,
+    "actual_duration": 21.384,
+    "text": "Why do effect checks matter? On the LaunderBench-mini benchmark, taint-only defenses were bypassed by one hundred percent of paraphrased and Hindi or Kannada translated attacks. By verifying parameters against the System of Record, LEASH stopped all forty-eight attacks\u2014with zero false blocks on benign actions and a median latency of 7.9 milliseconds.",
+    "mp3_file": "scene_06.mp3"
+  },
+  {
+    "id": 7,
+    "name": "Resolution & CTA",
+    "target_start": 76.0,
+    "target_duration": 13.0,
+    "actual_duration": 12.456,
+    "text": "With one-click human escalation and DPDP-ready hash-chained audits, enterprises can finally deploy autonomous agents where they pay. Priced like software. Saves like insurance. Put autonomous agents on a LEASH.",
+    "mp3_file": "scene_07.mp3"
+  }
+]
