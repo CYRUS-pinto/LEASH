@@ -3,547 +3,705 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LEASH — Cinematic Product Film</title>
+  <title>CAROT LEASH — Cinematic Launch Film & Neuro-Aesthetic Motion Studio</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brandBlue: '#0066cc',
+            brandSky: '#2997ff',
+            obsidian: '#07090e',
+            tileDark: '#0f141f',
+            crimsonBlock: '#ef4444',
+            emeraldAllow: '#10b981',
+            amberQuorum: '#f59e0b',
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background-color: #030712;
-      color: #f8fafc;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      user-select: none;
-    }
-
-    /* 16:9 Cinematic Stage */
-    #cinema-viewport {
-      width: 100vw;
-      height: 100vh;
-      max-width: 1920px;
-      max-height: 1080px;
-      position: relative;
-      background: radial-gradient(ellipse at 50% 40%, #0f172a 0%, #090d16 65%, #020617 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Ambient animated light leak (OpenAI / Anthropic aesthetic) */
-    .light-leak {
-      position: absolute;
-      width: 800px;
-      height: 800px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 102, 204, 0.15) 0%, rgba(56, 189, 248, 0.05) 45%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      animation: drift 16s ease-in-out infinite alternate;
-      z-index: 1;
-    }
-    @keyframes drift {
-      0% { transform: translate(-20%, -20%) scale(1); }
-      100% { transform: translate(20%, 20%) scale(1.2); }
-    }
-
-    /* Scene Container */
-    .scene {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      transform: scale(0.97);
-      padding: 60px;
-      z-index: 10;
-    }
-    .scene.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1);
-    }
-
-    /* Typography */
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #94a3b8;
-      margin-bottom: 28px;
-      backdrop-filter: blur(12px);
-    }
-    .pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #0066cc;
-      box-shadow: 0 0 12px #0066cc;
-    }
-    .hero-title {
-      font-size: 64px;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.15;
-      text-align: center;
-      max-width: 1080px;
-      margin-bottom: 24px;
-      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-sub {
-      font-size: 24px;
-      color: #94a3b8;
-      text-align: center;
-      max-width: 820px;
-      line-height: 1.5;
-      font-weight: 400;
-    }
-
-    /* Floating Glass Hardware/Software Card */
-    .glass-card {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 36px 44px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      width: 100%;
-      max-width: 980px;
-    }
-
-    /* Simulated Terminal */
-    .terminal-body {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #e2e8f0;
-      background: #090d16;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-top: 16px;
-    }
-    .badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 12px;
-    }
-    .badge-block { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .badge-allow { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .badge-escalate { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-
-    /* Burned Cinematic Subtitle Bar */
-    .subtitle-bar {
-      position: absolute;
-      bottom: 54px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 28px;
-      border-radius: 9999px;
-      background: rgba(3, 7, 18, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(16px);
-      font-size: 18px;
-      font-weight: 500;
+      background-color: #07090e;
       color: #f1f5f9;
-      text-align: center;
-      max-width: 920px;
-      z-index: 100;
-      letter-spacing: -0.01em;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
-    /* Player Controls (Top overlay) */
-    .controls {
-      position: fixed;
-      top: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 8px 18px;
-      border-radius: 9999px;
-      z-index: 200;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    /* Custom Glassmorphism */
+    .glass-panel {
+      background: rgba(15, 20, 31, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .btn {
-      background: #0066cc;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
+    
+    .glass-card {
+      background: rgba(18, 24, 38, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn:hover { background: #0077ed; transform: scale(1.02); }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-    }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
-    .timeline-scrubber {
-      width: 220px;
-      accent-color: #0066cc;
-      cursor: pointer;
-    }
-    .time-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: #94a3b8;
+    .glass-card:hover {
+      border-color: rgba(41, 151, 255, 0.3);
+      transform: translateY(-2px);
     }
 
-    /* Flash highlight */
-    .flash-block {
-      animation: flashRed 1s ease-out;
+    /* Motion Tokens */
+    .ease-out-expo {
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @keyframes flashRed {
-      0% { box-shadow: 0 0 60px rgba(239, 68, 68, 0.6), inset 0 0 30px rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.8); }
-      100% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.12); }
+    .spring-bounce {
+      transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Phi Grid Overlay */
+    .phi-line-v1 { left: 38.2%; } /* 733px / 1920px */
+    .phi-line-v2 { left: 61.8%; } /* 1187px / 1920px */
+    .phi-line-h1 { top: 38.2%; }  /* 412px / 1080px */
+    .phi-line-h2 { top: 61.8%; }  /* 668px / 1080px */
+
+    /* Active Storyboard Beat */
+    .story-beat.active {
+      border-color: #2997ff;
+      background: rgba(41, 151, 255, 0.12);
+      box-shadow: 0 0 25px rgba(41, 151, 255, 0.2);
     }
   </style>
 </head>
-<body>
+<body class="selection:bg-brandBlue selection:text-white">
 
-  <!-- Floating Control Bar -->
-  <div class="controls">
-    <button id="play-btn" class="btn" onclick="togglePlay()">
-      <span id="play-icon">▶</span>
-      <span id="play-text">Play Real Voice Demo</span>
-    </button>
-    <a href="/final_submission_demo.mp4" download="LEASH_Hackathon_Demo_1080p.mp4" class="btn" style="background: #10b981; text-decoration: none;">
-      <span>⬇</span> Download 1080p MP4
-    </a>
-    <button class="btn btn-secondary" onclick="toggleVideoMode()">🎬 Watch Rendered MP4</button>
-    <button class="btn btn-secondary" onclick="restartFilm()">↺ Replay</button>
-    <input id="scrubber" type="range" class="timeline-scrubber" min="0" max="41" value="0" step="0.1" oninput="seekFilm(this.value)"/>
-    <span id="time-display" class="time-label">00:00 / 00:41</span>
-  </div>
-
-  <audio id="voice-track" src="/voiceover.mp3" preload="auto"></audio>
-  <video id="mp4-player" src="/final_submission_demo.mp4" controls style="display: none; position: absolute; inset: 0; width: 100vw; height: 100vh; object-fit: contain; z-index: 90; background: #000;"></video>
-
-  <div id="cinema-viewport">
-    <div class="light-leak"></div>
-
-    <!-- SCENE 1: COLD OPEN (0:00 - 0:12) -->
-    <section id="scene-0" class="scene active">
-      <div class="pill">
-        <span class="pill-dot"></span>
-        <span>Deterministic Action-Control Gateway</span>
-      </div>
-      <h1 class="hero-title">&ldquo;An agent only does what it reads.&rdquo;</h1>
-      <p class="hero-sub">When prompt injection meets live execution credentials, post-hoc logging is too late.</p>
-    </section>
-
-    <!-- SCENE 2: THE AIR-GAP PRINCIPLE (0:12 - 0:24) -->
-    <section id="scene-1" class="scene">
-      <div class="pill" style="border-color: rgba(0, 102, 204, 0.4);">
-        <span class="pill-dot"></span>
-        <span>Physical Sidecar Air-Gap</span>
-      </div>
-      <h2 class="hero-title" style="font-size: 54px;">&ldquo;Judge the effect. Not the intent.&rdquo;</h2>
-      <div class="glass-card" style="text-align: center; padding: 28px;">
-        <div style="display: flex; align-items: center; justify-content: space-around; font-family: 'JetBrains Mono', monospace; font-size: 15px;">
-          <div style="padding: 18px 24px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; color: #fca5a5;">
-            Autonomous LLM<br/><span style="font-size: 12px; color: #ef4444;">(Zero Direct Tools)</span>
-          </div>
-          <div style="color: #64748b; font-size: 22px;">── [Propose Action] ──►</div>
-          <div style="padding: 18px 28px; background: rgba(0, 102, 204, 0.15); border: 1px solid #0066cc; border-radius: 12px; color: #38bdf8; box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);">
-            LEASH Gateway<br/><span style="font-size: 12px; color: #93c5fd;">(7-Stage Invariant Check)</span>
-          </div>
-          <div style="color: #64748b; font-size: 22px;">── [HMAC Token] ──►</div>
-          <div style="padding: 18px 24px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; color: #6ee7b7;">
-            Protected Tools<br/><span style="font-size: 12px; color: #10b981;">(Stripe / DB / API)</span>
-          </div>
+  <!-- ============================================== -->
+  <!-- 1. CINEMA STUDIO HEADER & GLOBAL CONTROLS      -->
+  <!-- ============================================== -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/10 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-brandBlue flex items-center justify-center font-mono font-bold text-white text-sm shadow-lg shadow-brandBlue/30">
+          L
         </div>
-      </div>
-    </section>
-
-    <!-- SCENE 3: LIVE ATTACK INTERCEPTION (0:24 - 0:44) -->
-    <section id="scene-2" class="scene">
-      <div class="pill" style="border-color: rgba(239, 68, 68, 0.4);">
-        <span class="pill-dot" style="background: #ef4444; box-shadow: 0 0 12px #ef4444;"></span>
-        <span>Adversarial Interception &bull; 9.54ms</span>
-      </div>
-      <div id="terminal-card" class="glass-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #94a3b8;">
-          <span>INPUT: Multilingual Prompt Injection (Kannada ticket)</span>
-          <span class="badge badge-block">STAGE 3 INVARIANT VIOLATION</span>
-        </div>
-        <div class="terminal-body">
-          <div style="color: #64748b;">// LLM received attacker instruction and proposed diverted refund:</div>
-          <div style="color: #f1f5f9; margin: 6px 0;">POST /gateway/propose</div>
-          <div style="color: #94a3b8;">{ "tool": "refund_order", "args": { "order_id": "ord_101", "amount": 45.0, "recipient": "attacker@evil.ru" } }</div>
-          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); color: #f87171;">
-            ◄ HTTP/1.1 401 UNAUTHORIZED<br/>
-            { "verdict": "BLOCK", "reason": "Recipient mismatch: Expected customer@legit.com, got attacker@evil.ru", "latency_ms": 9.54 }
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SCENE 4: DUAL CONTROL & CRYPTOGRAPHIC MINT (0:44 - 0:58) -->
-    <section id="scene-3" class="scene">
-      <div class="pill" style="border-color: rgba(245, 158, 11, 0.4);">
-        <span class="pill-dot" style="background: #f59e0b; box-shadow: 0 0 12px #f59e0b;"></span>
-        <span>Dual-Control Quorum Escalation</span>
-      </div>
-      <div class="glass-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #94a3b8;">
-          <span>OPERATION: High-Value Refund ($450.00 &gt; $300 Policy Cap)</span>
-          <span class="badge badge-escalate">QUORUM REQUIRED</span>
-        </div>
-        <div class="terminal-body">
-          <div style="color: #fbbf24;">[GATEWAY] Action escalated to Security Supervisor quorum (Req: aprv_8f12)</div>
-          <div style="color: #38bdf8; margin: 8px 0;">[SUPERVISOR] Cryptographic ECDSA signature verified: key_sec_lead</div>
-          <div style="color: #34d399; margin-top: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
-            ✔ EXECUTION RECEIPT MINTED (Single-Use SHA-256 HMAC)<br/>
-            <span style="font-size: 12px; color: #a7f3d0;">Token: hm_9a7b2c01ff3... Exp: 120s &bull; Tool executed with zero credential exposure</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SCENE 5: EMPIRICAL BENCHMARK (0:58 - 1:10) -->
-    <section id="scene-4" class="scene">
-      <div class="pill" style="border-color: rgba(16, 185, 129, 0.4);">
-        <span class="pill-dot" style="background: #10b981; box-shadow: 0 0 12px #10b981;"></span>
-        <span>LaunderBench-mini Benchmark</span>
-      </div>
-      <div class="glass-card" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center;">
-        <div style="padding: 24px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-          <div style="font-size: 60px; font-weight: 800; color: #10b981; font-family: 'JetBrains Mono', monospace; line-height: 1;">0.0%</div>
-          <div style="font-size: 15px; color: #94a3b8; margin-top: 8px;">Adversarial Bypass Rate<br/>(48/48 Attacks Blocked)</div>
-        </div>
-        <div style="padding: 24px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-          <div style="font-size: 60px; font-weight: 800; color: #38bdf8; font-family: 'JetBrains Mono', monospace; line-height: 1;">7.85<span style="font-size: 28px;">ms</span></div>
-          <div style="font-size: 15px; color: #94a3b8; margin-top: 8px;">Median Gateway Latency<br/>(Zero Perceptible Delay)</div>
-        </div>
-        <div style="padding: 24px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-          <div style="font-size: 60px; font-weight: 800; color: #a78bfa; font-family: 'JetBrains Mono', monospace; line-height: 1;">100%</div>
-          <div style="font-size: 15px; color: #94a3b8; margin-top: 8px;">Fail-Closed Security<br/>(Tamper-Evident SHA Chain)</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SCENE 6: OUTRO (1:10 - 1:18) -->
-    <section id="scene-5" class="scene">
-      <div class="pill">
-        <span class="pill-dot"></span>
-        <span>Open Source Security Standard</span>
-      </div>
-      <h2 class="hero-title" style="font-size: 52px; margin-bottom: 20px;">Autonomous agents don't need promises.<br/><span style="color: #38bdf8;">They need an air-gap.</span></h2>
-      <div style="padding: 16px 36px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 16px; font-family: 'JetBrains Mono', monospace; font-size: 24px; margin-bottom: 24px; box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);">
-        <span style="color: #64748b;">github.com/</span><span style="color: #38bdf8; font-weight: 700;">CYRUS-pinto/LEASH</span>
-      </div>
-      <p class="hero-sub" style="font-size: 18px;">Team CAROT &bull; St Aloysius (Deemed to be University) &bull; Sahyadri DevHack 2026</p>
-    </section>
-
-    <!-- Lower-Third Subtitle -->
-    <div id="subtitle" class="subtitle-bar">
-      Every production agent has tools. And every tool can be hijacked.
+        <span class="font-bold text-lg tracking-tight group-hover:text-brandSky transition-colors">CAROT LEASH</span>
+      </a>
+      <span class="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 font-mono text-gray-400 hidden sm:inline">
+        Neuro-Aesthetic Cinema Studio &bull; 89s Fibonacci Architecture
+      </span>
     </div>
-  </div>
 
+    <div class="flex items-center gap-3">
+      <button id="toggle-phi-btn" onclick="togglePhiGrid()" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 flex items-center gap-1.5 transition-all">
+        <span class="w-2 h-2 rounded-full bg-gray-500" id="phi-status-dot"></span>
+        <span>Phi Grid (&phi; = 1.618)</span>
+      </button>
+
+      <a href="final_submission_demo.mp4" download="LEASH_Final_Master_1080p.mp4" class="text-xs font-semibold px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 shadow-md shadow-emerald-900/30 transition-all">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Download Master 1080p
+      </a>
+
+      <a href="/" class="text-xs font-medium px-4 py-2 rounded-full bg-brandBlue hover:bg-brandSky text-white transition-all shadow-md shadow-brandBlue/30">
+        Live Gateway &rarr;
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- 2. MAIN CINEMA THEATER & VIDEO VIEWPORT        -->
+  <!-- ============================================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-10">
+
+    <!-- Cinema Stage -->
+    <div class="relative w-full aspect-video rounded-2xl overflow-hidden glass-panel border border-white/15 shadow-2xl bg-black group">
+      
+      <!-- Video Element -->
+      <video id="cinema-video" class="w-full h-full object-contain" preload="metadata" playsinline>
+        <source src="final_submission_demo.mp4" type="video/mp4"/>
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- Phi Grid Overlay (Mathematical Golden Ratio Lines) -->
+      <div id="phi-overlay" class="absolute inset-0 pointer-events-none z-20 hidden">
+        <div class="absolute top-0 bottom-0 phi-line-v1 w-[1px] bg-brandSky/40 shadow-[0_0_8px_rgba(41,151,255,0.6)]"></div>
+        <div class="absolute top-0 bottom-0 phi-line-v2 w-[1px] bg-brandSky/40 shadow-[0_0_8px_rgba(41,151,255,0.6)]"></div>
+        <div class="absolute left-0 right-0 phi-line-h1 h-[1px] bg-brandSky/40 shadow-[0_0_8px_rgba(41,151,255,0.6)]"></div>
+        <div class="absolute left-0 right-0 phi-line-h2 h-[1px] bg-brandSky/40 shadow-[0_0_8px_rgba(41,151,255,0.6)]"></div>
+        
+        <!-- Golden Ratio Focal Badge Point at (1187px, 412px) -->
+        <div class="absolute phi-line-v2 phi-line-h1 -translate-x-1/2 -translate-y-1/2 p-2 rounded-full border border-brandSky bg-brandSky/20 backdrop-blur-sm text-[11px] font-mono text-brandSky flex items-center gap-1.5 shadow-lg">
+          <span class="w-2 h-2 rounded-full bg-brandSky animate-ping"></span>
+          <span>&phi; Focal Vertex (Verdict Anchor)</span>
+        </div>
+      </div>
+
+      <!-- Video Control Bar Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col gap-2 z-30 opacity-95 group-hover:opacity-100 transition-opacity">
+        <div class="flex items-center gap-4">
+          <button id="play-pause-btn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg font-bold">
+            <span id="play-icon">▶</span>
+          </button>
+          
+          <input id="video-scrubber" type="range" min="0" max="47.56" value="0" step="0.05" oninput="seekVideo(this.value)" class="flex-1 accent-brandBlue cursor-pointer h-1.5 bg-white/20 rounded-lg"/>
+          
+          <div class="font-mono text-xs text-gray-300 min-w-[90px] text-right">
+            <span id="current-time">00:00</span> / <span id="duration-time">00:47</span>
+          </div>
+
+          <button onclick="toggleFullscreen()" class="text-gray-300 hover:text-white p-1">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Scene Context Banner -->
+    <div class="glass-panel p-5 rounded-xl border border-white/10 flex flex-wrap items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono uppercase px-2 py-0.5 rounded bg-brandBlue/30 text-brandSky border border-brandBlue/40" id="active-scene-badge">
+            Act I: The Visceral Hook
+          </span>
+          <span class="text-xs font-mono text-gray-400" id="active-scene-time">00:00 – 00:03</span>
+        </div>
+        <p class="text-sm text-gray-200 font-medium" id="active-scene-narration">
+          &ldquo;This is LEASH. Today's AI security tries to predict intent by filtering words...&rdquo;
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-mono text-gray-400">
+        <span>Foley: <strong class="text-white" id="active-scene-foley">Mechanical Keystroke + Sub-Bass Drop</strong></span>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 3. PRODUCTION STUDIO TABS                      -->
+    <!-- ============================================== -->
+    <div class="space-y-6">
+      <!-- Tabs Nav -->
+      <div class="flex flex-wrap items-center gap-2 border-b border-white/10 pb-3">
+        <button onclick="switchTab('storyboard')" id="tab-btn-storyboard" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all bg-white/10 text-white border border-white/10">
+          Storyboard &amp; Fibonacci Timeline
+        </button>
+        <button onclick="switchTab('veo')" id="tab-btn-veo" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all text-gray-400 hover:text-white hover:bg-white/5">
+          Google Flow (Veo 3.1) Prompts
+        </button>
+        <button onclick="switchTab('motion')" id="tab-btn-motion" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all text-gray-400 hover:text-white hover:bg-white/5">
+          Motion Physics &amp; Easing Tokens
+        </button>
+        <button onclick="switchTab('stack')" id="tab-btn-stack" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all text-gray-400 hover:text-white hover:bg-white/5">
+          Zero-Cost Production Stack
+        </button>
+      </div>
+
+      <!-- TAB 1: STORYBOARD -->
+      <div id="tab-storyboard" class="space-y-4">
+        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+          Click any card to seek video directly to that Fibonacci beat &bull; Climax at &phi;-point (00:55)
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Beat 1 -->
+          <div onclick="jumpTo(0)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="0" data-end="2.8">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:00 – 00:03</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">3s Hook</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">The Pattern Interrupt</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Title card &ldquo;Judge the effect, not the intent&rdquo;. Immediate System 1 arousal without static delay.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Narration: &ldquo;This is LEASH...&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 2 -->
+          <div onclick="jumpTo(2.8)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="2.8" data-end="8.5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:03 – 00:08</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">5s Attack</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">Poisoned Ingestion</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Diverted refund attack with Kannada/Hindi injection. Prompt classifiers fail against laundered text.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Narration: &ldquo;Today's AI security tries to predict intent...&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 3 -->
+          <div onclick="jumpTo(8.5)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="8.5" data-end="17.0">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:08 – 00:17</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">8s Thesis</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">LEASH Interception</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Deterministic invariant check blocks the diverted refund in 6.97ms. Red BLOCK badge pops with spring overshoot.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Narration: &ldquo;Don't guess the intent, judge the effect...&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 4 -->
+          <div onclick="jumpTo(17.0)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="17.0" data-end="23.0">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:17 – 00:23</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">6s SQL Attack</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">Destructive SQL Blocked</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              DROP TABLE injection intercepted at Stage 2. Role ACL default-deny enforced in 7.74ms.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Narration: &ldquo;Destructive SQL? Blocked.&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 5 -->
+          <div onclick="jumpTo(23.0)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="23.0" data-end="28.0">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:23 – 00:28</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">5s Boundary</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">Agent Never Holds Keys</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Architecture card: Agent &rarr; Gateway &rarr; Tool server. Dual-quorum escalation for operations over $300 cap.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Narration: &ldquo;Dual-control quorum escalation...&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 6 (Golden Climax) -->
+          <div onclick="jumpTo(28.0)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-brandSky/60 bg-brandBlue/10 hover:border-brandSky transition-all" data-start="28.0" data-end="37.2">
+            <div class="flex items-center justify-between text-xs font-mono text-brandSky">
+              <span class="font-bold">00:28 – 00:37</span>
+              <span class="px-1.5 py-0.5 rounded bg-brandBlue/40 border border-brandSky/40">&phi;-CLIMAX</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">LaunderBench-mini Proof</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              48 attacks: None 48/48, Regex 33/48, Taint 25/48, LEASH 0/48 escapes. 0 false blocks. Held final frame for System 2 encoding.
+            </p>
+            <div class="text-[11px] font-mono text-brandSky pt-2 border-t border-white/10">
+              Narration: &ldquo;Tested across ninety adversarial vectors...&rdquo;
+            </div>
+          </div>
+
+          <!-- Beat 7 -->
+          <div onclick="jumpTo(37.2)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="37.2" data-end="43.5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:37 – 00:43</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">6s Honesty</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">What This Does Not Prove</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Radical transparency: Small synthetic sample, single node audit log, design holds on our tests not general AI security.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Limitations: docs/KNOWN_LIMITATIONS.md
+            </div>
+          </div>
+
+          <!-- Beat 8 -->
+          <div onclick="jumpTo(43.5)" class="story-beat glass-card p-4 space-y-2 cursor-pointer border border-white/10 hover:border-brandSky transition-all" data-start="43.5" data-end="47.5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+              <span class="text-brandSky font-bold">00:43 – 00:47</span>
+              <span class="px-1.5 py-0.5 rounded bg-white/5">4s Outro</span>
+            </div>
+            <h4 class="font-semibold text-sm text-white">Open Source Resolution</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              GitHub repository link: github.com/CYRUS-pinto/LEASH. Resolving audio decay and logo lockup.
+            </p>
+            <div class="text-[11px] font-mono text-gray-400 pt-2 border-t border-white/5">
+              Team CAROT &bull; Sahyadri DevHack
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: GOOGLE FLOW VEO 3.1 PROMPTS -->
+      <div id="tab-veo" class="hidden space-y-6">
+        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+          Master Google Flow (Veo 3.1) Prompts &bull; Front-loaded camera anchors + Deterministic JSON syntax
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Prompt 1 -->
+          <div class="glass-card p-5 space-y-3 border border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-brandSky font-semibold">B-Roll Shot 1 (00:03–00:11)</span>
+              <span class="text-[11px] font-mono text-gray-500">The Blast Radius</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Infiltrated Data Streams</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              A slow macro dolly-in shot from just above a dark reflective glass table (that's where the camera is) tracks thousands of glowing golden fiber-optic data streams flowing rapidly through a vast, dark brutalist enterprise vault. Suddenly, a single jagged crimson data filament is weaving into the golden currents...
+            </p>
+            <div class="pt-2 flex gap-2">
+              <button onclick="copyText(promptText1, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all">
+                Copy Natural Language
+              </button>
+              <button onclick="copyText(promptJson1, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-brandBlue/30 border border-brandBlue/50 text-brandSky hover:bg-brandBlue/50 transition-all">
+                Copy JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- Prompt 2 -->
+          <div class="glass-card p-5 space-y-3 border border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-brandSky font-semibold">B-Roll Shot 2 (00:19–00:27)</span>
+              <span class="text-[11px] font-mono text-gray-500">The Gateway Brake</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Sapphire Gateway Monolith</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              A low-angle medium tracking shot positioned beside a precision-engineered translucent sapphire glass monolith (that's where the camera is), looking slightly up toward a dark architectural ceiling as a high-velocity crimson light beam is racing toward the monolith...
+            </p>
+            <div class="pt-2 flex gap-2">
+              <button onclick="copyText(promptText2, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all">
+                Copy Natural Language
+              </button>
+              <button onclick="copyText(promptJson2, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-brandBlue/30 border border-brandBlue/50 text-brandSky hover:bg-brandBlue/50 transition-all">
+                Copy JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- Prompt 3 -->
+          <div class="glass-card p-5 space-y-3 border border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-brandSky font-semibold">B-Roll Shot 3 (01:16–01:24)</span>
+              <span class="text-[11px] font-mono text-gray-500">Human Reassurance</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Calm Control Room at Golden Hour</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              An eye-level medium shot from behind the right shoulder of an Indian systems architect in her thirties wearing a charcoal wool blazer (that's where the camera is), sitting at a warm walnut desk in a sunlit modern Bengaluru glass office at golden hour...
+            </p>
+            <div class="pt-2 flex gap-2">
+              <button onclick="copyText(promptText3, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all">
+                Copy Natural Language
+              </button>
+              <button onclick="copyText(promptJson3, this)" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-brandBlue/30 border border-brandBlue/50 text-brandSky hover:bg-brandBlue/50 transition-all">
+                Copy JSON
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 3: MOTION PHYSICS -->
+      <div id="tab-motion" class="hidden space-y-6">
+        <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+          Mathematical Motion Tokens &bull; Interactive Curve Sandbox
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card p-6 space-y-4">
+            <h4 class="font-bold text-white">Interactive Curve Inspector</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Test how cubic-bezier control points govern perceived mass, inertia, and spring rebound in LEASH UI components.
+            </p>
+
+            <div class="space-y-4 pt-2">
+              <!-- Expo Test -->
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-brandSky">--ease-out-expo (480ms)</span>
+                  <span class="text-gray-400">cubic-bezier(0.16, 1, 0.3, 1)</span>
+                </div>
+                <div class="w-full h-10 bg-black/50 rounded-xl p-1 relative overflow-hidden">
+                  <div id="box-expo" class="w-12 h-8 rounded-lg bg-brandBlue flex items-center justify-center text-[10px] font-mono text-white font-bold transition-all duration-[480ms] ease-out-expo">
+                    Panel
+                  </div>
+                </div>
+                <button onclick="testAnim('box-expo')" class="mt-2 text-xs font-mono px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-gray-300">
+                  Trigger Hero Entrance
+                </button>
+              </div>
+
+              <!-- Spring Pop Test -->
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-crimsonBlock">motion-spring-default (500ms, Back-Out)</span>
+                  <span class="text-gray-400">cubic-bezier(0.34, 1.56, 0.64, 1)</span>
+                </div>
+                <div class="w-full h-10 bg-black/50 rounded-xl p-1 relative overflow-hidden">
+                  <div id="box-spring" class="w-16 h-8 rounded-lg bg-crimsonBlock flex items-center justify-center text-[10px] font-mono text-white font-bold transition-all duration-[500ms] spring-bounce">
+                    BLOCK
+                  </div>
+                </div>
+                <button onclick="testAnim('box-spring')" class="mt-2 text-xs font-mono px-3 py-1 rounded bg-crimsonBlock/20 text-crimsonBlock border border-crimsonBlock/40 hover:bg-crimsonBlock/30">
+                  Trigger Verdict Pop (Overshoot)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 space-y-4">
+            <h4 class="font-bold text-white">Motion Choreography Hierarchy</h4>
+            <div class="space-y-3 text-xs font-mono">
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 flex justify-between items-center">
+                <span>Micro-Interactions</span>
+                <span class="text-emerald-400">100ms – 200ms (buttons, badges)</span>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 flex justify-between items-center">
+                <span>UI State Changes</span>
+                <span class="text-brandSky">200ms – 320ms (toasts, modals)</span>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 flex justify-between items-center">
+                <span>Layout Transitions</span>
+                <span class="text-amber-400">300ms – 500ms (drawers, reveals)</span>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 flex justify-between items-center">
+                <span>Scene &amp; Route Shifts</span>
+                <span class="text-purple-400">500ms – 800ms (glides, camera pans)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: ZERO-COST STACK -->
+      <div id="tab-stack" class="hidden space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card p-6 space-y-4 border border-brandBlue/30">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white text-base">Pipeline A: Autonomous Code-to-Video</h4>
+              <span class="text-xs font-mono px-2 py-0.5 rounded bg-brandBlue/20 text-brandSky">Zero Touch</span>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Programmatic generation modeled after Anthropic's Claude Motion workflow. Animations written as code synced to timestamps.
+            </p>
+            <ul class="space-y-2 text-xs font-mono text-gray-300">
+              <li class="flex items-center gap-2"><span class="text-brandSky">&bull;</span> edge-tts / whisper.cpp (Voiceover + .srt alignment)</li>
+              <li class="flex items-center gap-2"><span class="text-brandSky">&bull;</span> Playwright + Focra (Auto-zoom screen telemetry)</li>
+              <li class="flex items-center gap-2"><span class="text-brandSky">&bull;</span> Remotion / HTML (Code-driven motion graphics)</li>
+              <li class="flex items-center gap-2"><span class="text-brandSky">&bull;</span> FFmpeg + pydub (Audio mastering to -14 LUFS)</li>
+            </ul>
+          </div>
+
+          <div class="glass-card p-6 space-y-4 border border-emerald-500/30">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white text-base">Pipeline B: Artisanal Studio Stack</h4>
+              <span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">High Craft</span>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              100% free open-source software replacing $500+/year commercial subscriptions (Screen Studio, Loom, Camtasia, Premiere).
+            </p>
+            <ul class="space-y-2 text-xs font-mono text-gray-300">
+              <li class="flex items-center gap-2"><span class="text-emerald-400">&bull;</span> OpenScreen / Capptivo (Watermark-free 2x auto-zoom)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">&bull;</span> Cap Studio Mode (3D camera moves &amp; mask blurs)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">&bull;</span> OBS Studio (Lossless multi-stream capture)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">&bull;</span> DaVinci Resolve Free (Fusion nodes &amp; Fairlight audio)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="mt-20 border-t border-white/10 py-8 px-6 text-center text-xs font-mono text-gray-500">
+    CAROT LEASH &bull; St Aloysius Deemed to be University &bull; Sahyadri DevHack 2026 PS 2.1
+  </footer>
+
+  <!-- Scripts -->
   <script>
-    // Audio synthesis setup using Web Audio API (Zero external MP3 dependencies)
-    let audioCtx = null;
-    let isPlaying = false;
-    let voiceEnabled = true;
-    let currentTime = 0;
-    let timer = null;
+    const video = document.getElementById('cinema-video');
+    const playBtn = document.getElementById('play-pause-btn');
+    const playIcon = document.getElementById('play-icon');
+    const scrubber = document.getElementById('video-scrubber');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationTimeEl = document.getElementById('duration-time');
+    const phiOverlay = document.getElementById('phi-overlay');
+    const phiDot = document.getElementById('phi-status-dot');
 
-    const voiceAudio = document.getElementById('voice-track');
-    const mp4Player = document.getElementById('mp4-player');
-    let isVideoMode = false;
+    let isPhiActive = false;
 
-    const timeline = [
-      { start: 0,    end: 5.5,  scene: 0, text: "Every production agent has tools. And every tool can be hijacked.", sfx: 'ambient' },
-      { start: 5.5,  end: 11.8, scene: 1, text: "LEASH removes all credentials from the model. Actions are judged at the boundary, not inside the prompt.", sfx: 'click' },
-      { start: 11.8, end: 20.5, scene: 2, text: "When a prompt injection tries to divert a customer refund, LEASH intercepts the action in 9 milliseconds. Mathematical fail-closed.", sfx: 'thud' },
-      { start: 20.5, end: 27.0, scene: 3, text: "High-value operations escalate to dual-control quorum. No cryptographic token, zero execution.", sfx: 'chime' },
-      { start: 27.0, end: 35.0, scene: 4, text: "Tested across 90 adversarial vectors in 4 languages: zero bypasses, 7.85 millisecond latency.", sfx: 'click' },
-      { start: 35.0, end: 41.5, scene: 5, text: "Autonomous agents don't need promises. They need an air-gap. LEASH is open source.", sfx: 'ambient' },
-    ];
-
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Toggle Play/Pause
+    function togglePlay() {
+      if (video.paused) {
+        video.play();
+        playIcon.textContent = '❚❚';
+      } else {
+        video.pause();
+        playIcon.textContent = '▶';
       }
     }
 
-    // Play Synth SFX
-    let playedSfx = {};
-    function playSfx(type, beatStart) {
-      if (!audioCtx || playedSfx[beatStart]) return;
-      playedSfx[beatStart] = true;
-      if (type === 'thud') {
-        // 808 Sub-bass drop for BLOCK
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(32, audioCtx.currentTime + 0.8);
-        gain.gain.setValueAtTime(0.7, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.85);
-
-        // Visual flash
-        const tcard = document.getElementById('terminal-card');
-        if (tcard) {
-          tcard.classList.add('flash-block');
-          setTimeout(() => tcard.classList.remove('flash-block'), 1000);
-        }
-      } else if (type === 'chime') {
-        // High-register chime for TOKEN MINT
-        [1046.5, 1318.5].forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
-          gain.gain.setValueAtTime(0.3, audioCtx.currentTime + idx * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 1.2);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(audioCtx.currentTime + idx * 0.08);
-          osc.stop(audioCtx.currentTime + idx * 0.08 + 1.25);
-        });
-      } else if (type === 'click') {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
-      }
-    }
-
-    function updateFrame() {
-      currentTime = voiceAudio.currentTime;
-      const currentBeat = timeline.find(b => currentTime >= b.start && currentTime < b.end) || timeline[timeline.length - 1];
-
-      // Switch active scene
-      for (let i = 0; i <= 5; i++) {
-        const sc = document.getElementById(`scene-${i}`);
-        if (sc) {
-          if (i === currentBeat.scene) sc.classList.add('active');
-          else sc.classList.remove('active');
-        }
-      }
-
-      // Update Subtitle
-      document.getElementById('subtitle').innerText = currentBeat.text;
-
-      // SFX trigger
-      playSfx(currentBeat.sfx, currentBeat.start);
-
-      // Scrubber & Time
-      document.getElementById('scrubber').value = currentTime;
-      const mins = String(Math.floor(currentTime / 60)).padStart(2, '0');
-      const secs = String(Math.floor(currentTime % 60)).padStart(2, '0');
-      document.getElementById('time-display').innerText = `${mins}:${secs} / 00:41`;
-    }
-
-    voiceAudio.addEventListener('timeupdate', updateFrame);
-    voiceAudio.addEventListener('ended', () => {
-      pauseFilm();
-      currentTime = 41;
-      updateFrame();
+    // Video timeupdate sync
+    video.addEventListener('timeupdate', () => {
+      scrubber.value = video.currentTime;
+      currentTimeEl.textContent = formatTime(video.currentTime);
+      updateActiveScene(video.currentTime);
     });
 
-    function togglePlay() {
-      initAudio();
-      if (voiceAudio.paused) {
-        voiceAudio.play();
-        document.getElementById('play-icon').innerText = '❚❚';
-        document.getElementById('play-text').innerText = 'Pause';
+    video.addEventListener('loadedmetadata', () => {
+      scrubber.max = video.duration;
+      durationTimeEl.textContent = formatTime(video.duration);
+    });
+
+    video.addEventListener('ended', () => {
+      playIcon.textContent = '▶';
+    });
+
+    function seekVideo(val) {
+      video.currentTime = parseFloat(val);
+    }
+
+    function jumpTo(timeSec) {
+      video.currentTime = timeSec;
+      video.play();
+      playIcon.textContent = '❚❚';
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    // Phi Grid Toggle
+    function togglePhiGrid() {
+      isPhiActive = !isPhiActive;
+      if (isPhiActive) {
+        phiOverlay.classList.remove('hidden');
+        phiDot.className = 'w-2 h-2 rounded-full bg-brandSky animate-pulse';
       } else {
-        pauseFilm();
+        phiOverlay.classList.add('hidden');
+        phiDot.className = 'w-2 h-2 rounded-full bg-gray-500';
       }
     }
 
-    function pauseFilm() {
-      voiceAudio.pause();
-      document.getElementById('play-icon').innerText = '▶';
-      document.getElementById('play-text').innerText = 'Play Real Voice Demo';
-    }
-
-    function restartFilm() {
-      playedSfx = {};
-      voiceAudio.currentTime = 0;
-      updateFrame();
-      voiceAudio.play();
-      document.getElementById('play-icon').innerText = '❚❚';
-      document.getElementById('play-text').innerText = 'Pause';
-    }
-
-    function seekFilm(val) {
-      playedSfx = {};
-      voiceAudio.currentTime = parseFloat(val);
-      updateFrame();
-    }
-
-    function toggleVideoMode() {
-      isVideoMode = !isVideoMode;
-      if (isVideoMode) {
-        pauseFilm();
-        mp4Player.style.display = 'block';
-        mp4Player.play();
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        video.requestFullscreen().catch(() => {});
       } else {
-        mp4Player.pause();
-        mp4Player.style.display = 'none';
+        document.exitFullscreen().catch(() => {});
       }
     }
 
-    // Keyboard shortcuts
+    // Active Storyboard sync
+    const scenes = [
+      { start: 0, end: 2.8, title: "Act I: Pattern Interrupt", foley: "Mechanical Click + Sub-Bass Drop", narration: "This is LEASH. Today's AI security tries to predict intent by filtering words..." },
+      { start: 2.8, end: 8.5, title: "Act II: The Attack", foley: "Rapid Terminal Ingestion", narration: "Today's AI security tries to predict intent by filtering words. But attackers just rephrase, translate, or split payloads." },
+      { start: 8.5, end: 17.0, title: "Act III: LEASH Interception", foley: "Crisp Alert Ping + Latch", narration: "LEASH takes a different approach: don't guess the intent, judge the effect. Every agent action is intercepted in under 10 milliseconds." },
+      { start: 17.0, end: 23.0, title: "Act IV: SQL Attack Blocked", foley: "Damped Lock Sound", narration: "We inspect the deterministic state change against our policy invariants. Destructive SQL? Blocked. Diverted refunds? Blocked." },
+      { start: 23.0, end: 28.0, title: "Act V: Architecture Boundary", foley: "High-register Chime", narration: "High-value operations escalate to dual-control quorum." },
+      { start: 28.0, end: 37.2, title: "Act VI: LaunderBench Climax", foley: "Harmonic Percussive Swell", narration: "Tested across ninety adversarial vectors with zero bypasses. Because in security, effects don't lie." },
+      { start: 37.2, end: 43.5, title: "Act VII: What This Does Not Prove", foley: "Ambient Drone Transition", narration: "Transparent evaluation limits: 48 synthetic traces, small sample, single node." },
+      { start: 43.5, end: 47.5, title: "Act VIII: Open Source Outro", foley: "Resolving Piano Tail", narration: "CAROT LEASH &bull; github.com/CYRUS-pinto/LEASH" }
+    ];
+
+    function updateActiveScene(t) {
+      const active = scenes.find(s => t >= s.start && t < s.end) || scenes[scenes.length - 1];
+      document.getElementById('active-scene-badge').textContent = active.title;
+      document.getElementById('active-scene-time').textContent = `${formatTime(active.start)} – ${formatTime(active.end)}`;
+      document.getElementById('active-scene-narration').innerHTML = `&ldquo;${active.narration}&rdquo;`;
+      document.getElementById('active-scene-foley').textContent = active.foley;
+
+      document.querySelectorAll('.story-beat').forEach(card => {
+        const s = parseFloat(card.getAttribute('data-start'));
+        const e = parseFloat(card.getAttribute('data-end'));
+        if (t >= s && t < e) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+
+    // Tabs switching
+    function switchTab(tabId) {
+      ['storyboard', 'veo', 'motion', 'stack'].forEach(id => {
+        document.getElementById(`tab-${id}`).classList.add('hidden');
+        document.getElementById(`tab-btn-${id}`).className = "px-4 py-2 rounded-xl text-sm font-semibold transition-all text-gray-400 hover:text-white hover:bg-white/5";
+      });
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-btn-${tabId}`).className = "px-4 py-2 rounded-xl text-sm font-semibold transition-all bg-white/10 text-white border border-white/10";
+    }
+
+    // Interactive Animation Sandbox
+    function testAnim(elId) {
+      const el = document.getElementById(elId);
+      el.style.transform = 'translateX(180px)';
+      setTimeout(() => {
+        el.style.transform = 'translateX(0px)';
+      }, 700);
+    }
+
+    // Clipboard copy helper
+    const promptText1 = "A slow macro dolly-in shot from just above a dark reflective glass table (that's where the camera is) tracks thousands of glowing golden fiber-optic data streams flowing rapidly through a vast, dark brutalist enterprise vault. Suddenly, a single jagged crimson data filament is weaving into the golden currents, pulsing erratically and casting red reflections across the dark glass floor below. Filmed on 35mm anamorphic lens with shallow depth of field, high-contrast chiaroscuro lighting, and cool blue ambient shadows. A deep electrical hum vibrates in the room while rapid crystalline clicks echo and a tense low-frequency drone builds. --no text --no UI --no people --no blurry edges";
+    const promptJson1 = JSON.stringify({
+      "subject": "(Thousands of glowing golden fiber-optic data streams:1.2) infiltrated by a single (jagged crimson poisoned filament:1.3)",
+      "setting": "Vast dark brutalist enterprise server vault, dark reflective glass floor visible below",
+      "camera": "macro close-up, slow dolly-in from just above the glass surface (that's where the camera is), 35mm anamorphic lens, shallow depth of field",
+      "lighting": "dramatic chiaroscuro, cool blue shadows cut by pulsating crimson glow from the injected filament",
+      "style": "hyperrealistic cinematic, 8K, tactile glass and light physics, subtle film grain",
+      "audio": "deep server room electrical hum, rapid crystalline data clicks, tense low-frequency sub-bass drone",
+      "negative": "text, watermarks, human faces, cartoon"
+    }, null, 2);
+
+    const promptText2 = "A low-angle medium tracking shot positioned beside a precision-engineered translucent sapphire glass monolith (that's where the camera is), looking slightly up toward a dark architectural ceiling as a high-velocity crimson light beam is racing toward the monolith. As the crimson beam strikes the first of eight parallel glass plates inside the monolith, the plates are illuminating sequentially in crisp cyan blue, instantly freezing and shattering the red beam into harmless dust motes while clean golden light continues flowing smoothly out the other side. Shot with a macro telephoto lens, razor-sharp focus, volumetric dust in the air. A sharp metallic latch clicks into place, followed by a deep resonant sub-bass thud and calm ambient silence. --no text --no people --no fire";
+    const promptJson2 = JSON.stringify({
+      "subject": "(Eight sequential translucent sapphire glass gateway plates:1.3) intercepting and halting a racing crimson beam while golden streams pass cleanly through",
+      "setting": "Minimalist dark obsidian architectural chamber with overhead concrete ribs visible above",
+      "camera": "low-angle medium tracking shot beside the glass monolith (that's where the camera is), slow orbit, 50mm prime lens",
+      "lighting": "crisp cyan blue internal edge-lighting inside the glass plates contrasting with warm golden output light",
+      "style": "Apple-grade industrial hardware cinematography, photorealistic glass refraction, 8K",
+      "audio": "sharp precision metallic latch click, deep resonant sub-bass brake thud, calm atmospheric room tone",
+      "negative": "text, logos, chaotic explosions, cartoon"
+    }, null, 2);
+
+    const promptText3 = "An eye-level medium shot from behind the right shoulder of an Indian systems architect in her thirties wearing a charcoal wool blazer (that's where the camera is), sitting at a warm walnut desk in a sunlit modern Bengaluru glass office at golden hour. She is calmly tapping a single key on a minimalist mechanical keyboard while looking at a clean, dark-mode telemetry dashboard on an ultrawide monitor, then taking a sip from a ceramic coffee mug. Warm golden-hour sunlight from frame left backlights floating dust motes while soft cool monitor light illuminates her hands. Soft wool fabric rustles, a single tactile mechanical key clicks, and gentle acoustic piano notes fade in over quiet office ambiance. --no garbled screen text --no extra fingers";
+    const promptJson3 = JSON.stringify({
+      "subject": "An Indian systems architect in her thirties in a charcoal wool blazer calmly pressing a single key to approve an escalated agent action",
+      "setting": "Warm sunlit modern glass office at golden hour, walnut desk, ceramic mug, ultrawide monitor with clean dark-mode geometric blocks",
+      "camera": "eye-level over-the-shoulder medium shot from behind her right shoulder (that's where the camera is), slow push-in, 35mm lens",
+      "lighting": "soft diffused golden-hour sunlight from frame left, warm and reassuring, subtle cool fill from monitor",
+      "style": "Anthropic launch film aesthetic, warm editorial realism, 35mm film grain, natural skin tones",
+      "audio": "soft wool cloth movement, one crisp mechanical key press, ceramic mug resting on wood, warm ambient piano chord",
+      "negative": "garbled text, neon cyberpunk, distorted hands"
+    }, null, 2);
+
+    function copyText(txt, btn) {
+      navigator.clipboard.writeText(txt).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = "Copied!";
+        btn.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.classList.remove('bg-emerald-600', 'text-white');
+        }, 2000);
+      });
+    }
+
+    // Keyboard Space to Play/Pause
     window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
+      if (e.code === 'Space' && e.target === document.body) {
         e.preventDefault();
         togglePlay();
-      } else if (e.code === 'ArrowRight') {
-        seekFilm(Math.min(41, voiceAudio.currentTime + 3));
-      } else if (e.code === 'ArrowLeft') {
-        seekFilm(Math.max(0, voiceAudio.currentTime - 3));
       }
     });
   </script>
