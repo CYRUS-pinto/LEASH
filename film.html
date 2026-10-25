@@ -241,13 +241,19 @@
   <div class="controls">
     <button id="play-btn" class="btn" onclick="togglePlay()">
       <span id="play-icon">▶</span>
-      <span id="play-text">Play Film</span>
+      <span id="play-text">Play Real Voice Demo</span>
     </button>
+    <a href="/final_submission_demo.mp4" download="LEASH_Hackathon_Demo_1080p.mp4" class="btn" style="background: #10b981; text-decoration: none;">
+      <span>⬇</span> Download 1080p MP4
+    </a>
+    <button class="btn btn-secondary" onclick="toggleVideoMode()">🎬 Watch Rendered MP4</button>
     <button class="btn btn-secondary" onclick="restartFilm()">↺ Replay</button>
-    <input id="scrubber" type="range" class="timeline-scrubber" min="0" max="78" value="0" oninput="seekFilm(this.value)"/>
-    <span id="time-display" class="time-label">00:00 / 01:18</span>
-    <button class="btn btn-secondary" onclick="toggleVoice()">🎙 Voice: <span id="voice-state">ON</span></button>
+    <input id="scrubber" type="range" class="timeline-scrubber" min="0" max="41" value="0" step="0.1" oninput="seekFilm(this.value)"/>
+    <span id="time-display" class="time-label">00:00 / 00:41</span>
   </div>
+
+  <audio id="voice-track" src="/voiceover.mp3" preload="auto"></audio>
+  <video id="mp4-player" src="/final_submission_demo.mp4" controls style="display: none; position: absolute; inset: 0; width: 100vw; height: 100vh; object-fit: contain; z-index: 90; background: #000;"></video>
 
   <div id="cinema-viewport">
     <div class="light-leak"></div>
@@ -380,13 +386,17 @@
     let currentTime = 0;
     let timer = null;
 
+    const voiceAudio = document.getElementById('voice-track');
+    const mp4Player = document.getElementById('mp4-player');
+    let isVideoMode = false;
+
     const timeline = [
-      { start: 0,  end: 12, scene: 0, text: "Every production agent has tools. And every tool can be hijacked.", sfx: 'ambient' },
-      { start: 12, end: 24, scene: 1, text: "LEASH removes all credentials from the model. Actions are judged at the boundary, not inside the prompt.", sfx: 'click' },
-      { start: 24, end: 44, scene: 2, text: "When a prompt injection tries to divert a customer refund, LEASH intercepts the action in 9 milliseconds. Mathematical fail-closed.", sfx: 'thud' },
-      { start: 44, end: 58, scene: 3, text: "High-value operations escalate to dual-control quorum. No cryptographic token, zero execution.", sfx: 'chime' },
-      { start: 58, end: 70, scene: 4, text: "Tested across 90 adversarial vectors in 4 languages: zero bypasses, 7.85 millisecond latency.", sfx: 'click' },
-      { start: 70, end: 78, scene: 5, text: "Autonomous agents don't need promises. They need an air-gap. LEASH is open source.", sfx: 'ambient' },
+      { start: 0,    end: 5.5,  scene: 0, text: "Every production agent has tools. And every tool can be hijacked.", sfx: 'ambient' },
+      { start: 5.5,  end: 11.8, scene: 1, text: "LEASH removes all credentials from the model. Actions are judged at the boundary, not inside the prompt.", sfx: 'click' },
+      { start: 11.8, end: 20.5, scene: 2, text: "When a prompt injection tries to divert a customer refund, LEASH intercepts the action in 9 milliseconds. Mathematical fail-closed.", sfx: 'thud' },
+      { start: 20.5, end: 27.0, scene: 3, text: "High-value operations escalate to dual-control quorum. No cryptographic token, zero execution.", sfx: 'chime' },
+      { start: 27.0, end: 35.0, scene: 4, text: "Tested across 90 adversarial vectors in 4 languages: zero bypasses, 7.85 millisecond latency.", sfx: 'click' },
+      { start: 35.0, end: 41.5, scene: 5, text: "Autonomous agents don't need promises. They need an air-gap. LEASH is open source.", sfx: 'ambient' },
     ];
 
     function initAudio() {
@@ -396,8 +406,10 @@
     }
 
     // Play Synth SFX
-    function playSfx(type) {
-      if (!audioCtx) return;
+    let playedSfx = {};
+    function playSfx(type, beatStart) {
+      if (!audioCtx || playedSfx[beatStart]) return;
+      playedSfx[beatStart] = true;
       if (type === 'thud') {
         // 808 Sub-bass drop for BLOCK
         const osc = audioCtx.createOscillator();
@@ -433,7 +445,6 @@
           osc.stop(audioCtx.currentTime + idx * 0.08 + 1.25);
         });
       } else if (type === 'click') {
-        // Subtle UI click
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'triangle';
@@ -447,23 +458,8 @@
       }
     }
 
-    // Speech Synthesis for natural voiceover
-    let lastSpokenScene = -1;
-    function speakText(text, sceneIdx) {
-      if (!voiceEnabled || !('speechSynthesis' in window)) return;
-      if (lastSpokenScene === sceneIdx) return;
-      lastSpokenScene = sceneIdx;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.95;
-      utterance.pitch = 0.92;
-      const voices = window.speechSynthesis.getVoices();
-      const naturalVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('David') || v.name.includes('Guy')));
-      if (naturalVoice) utterance.voice = naturalVoice;
-      window.speechSynthesis.speak(utterance);
-    }
-
     function updateFrame() {
+      currentTime = voiceAudio.currentTime;
       const currentBeat = timeline.find(b => currentTime >= b.start && currentTime < b.end) || timeline[timeline.length - 1];
 
       // Switch active scene
@@ -478,65 +474,64 @@
       // Update Subtitle
       document.getElementById('subtitle').innerText = currentBeat.text;
 
-      // SFX trigger on boundary
-      if (Math.floor(currentTime) === currentBeat.start) {
-        playSfx(currentBeat.sfx);
-        speakText(currentBeat.text, currentBeat.scene);
-      }
+      // SFX trigger
+      playSfx(currentBeat.sfx, currentBeat.start);
 
       // Scrubber & Time
       document.getElementById('scrubber').value = currentTime;
       const mins = String(Math.floor(currentTime / 60)).padStart(2, '0');
       const secs = String(Math.floor(currentTime % 60)).padStart(2, '0');
-      document.getElementById('time-display').innerText = `${mins}:${secs} / 01:18`;
+      document.getElementById('time-display').innerText = `${mins}:${secs} / 00:41`;
     }
+
+    voiceAudio.addEventListener('timeupdate', updateFrame);
+    voiceAudio.addEventListener('ended', () => {
+      pauseFilm();
+      currentTime = 41;
+      updateFrame();
+    });
 
     function togglePlay() {
       initAudio();
-      isPlaying = !isPlaying;
-      if (isPlaying) {
+      if (voiceAudio.paused) {
+        voiceAudio.play();
         document.getElementById('play-icon').innerText = '❚❚';
         document.getElementById('play-text').innerText = 'Pause';
-        timer = setInterval(() => {
-          currentTime += 1;
-          if (currentTime >= 78) {
-            pauseFilm();
-            currentTime = 78;
-          }
-          updateFrame();
-        }, 1000);
       } else {
         pauseFilm();
       }
     }
 
     function pauseFilm() {
-      isPlaying = false;
-      clearInterval(timer);
+      voiceAudio.pause();
       document.getElementById('play-icon').innerText = '▶';
-      document.getElementById('play-text').innerText = 'Play Film';
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      document.getElementById('play-text').innerText = 'Play Real Voice Demo';
     }
 
     function restartFilm() {
-      pauseFilm();
-      currentTime = 0;
-      lastSpokenScene = -1;
+      playedSfx = {};
+      voiceAudio.currentTime = 0;
       updateFrame();
-      togglePlay();
+      voiceAudio.play();
+      document.getElementById('play-icon').innerText = '❚❚';
+      document.getElementById('play-text').innerText = 'Pause';
     }
 
     function seekFilm(val) {
-      currentTime = parseInt(val, 10);
-      lastSpokenScene = -1;
+      playedSfx = {};
+      voiceAudio.currentTime = parseFloat(val);
       updateFrame();
     }
 
-    function toggleVoice() {
-      voiceEnabled = !voiceEnabled;
-      document.getElementById('voice-state').innerText = voiceEnabled ? 'ON' : 'OFF';
-      if (!voiceEnabled && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
+    function toggleVideoMode() {
+      isVideoMode = !isVideoMode;
+      if (isVideoMode) {
+        pauseFilm();
+        mp4Player.style.display = 'block';
+        mp4Player.play();
+      } else {
+        mp4Player.pause();
+        mp4Player.style.display = 'none';
       }
     }
 
@@ -546,16 +541,11 @@
         e.preventDefault();
         togglePlay();
       } else if (e.code === 'ArrowRight') {
-        seekFilm(Math.min(78, currentTime + 5));
+        seekFilm(Math.min(41, voiceAudio.currentTime + 3));
       } else if (e.code === 'ArrowLeft') {
-        seekFilm(Math.max(0, currentTime - 5));
+        seekFilm(Math.max(0, voiceAudio.currentTime - 3));
       }
     });
-
-    // Populate voices
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-    }
   </script>
 </body>
 </html>
